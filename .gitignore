@@ -1,4 +1,6 @@
-# Copied from the internet.
+# ignore the gigantic word list
+en.log
+en.txt
 
 # ignore compiled stuff
 *target*
