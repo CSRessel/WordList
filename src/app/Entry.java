@@ -6,33 +6,47 @@
 
 package app;
 
-public class Entry
+public class Entry implements Comparable<Entry>
 {
 	//--------------------------------
 	// Fields
 	
-	private String value;
+	private String word;
 	private int freq;
 	
 	//--------------------------------
 	// Constructors
 	
-	public Entry(String v, int f)
+	public Entry(String w, int f)
 	{
-		this.value = v;
+		this.word = w;
 		this.freq = f;
 	}
 	
 	//--------------------------------
 	// Accessors
 	
-	public String getValue()
+	public String getWord()
 	{
-		return value;
+		return word;
 	}
 	
 	public int getFreq()
 	{
 		return freq;
+	}
+	
+	//--------------------------------
+	// Interface Methods
+	
+	public int compareTo(Entry e)
+	{
+		// we want a higher frequency to be a lower object for priorty in the PriorityQueue used elsewhere
+		if (this.freq > e.freq)
+			return -1;
+		else if (this.freq < e.freq)
+			return 1;
+		else
+			return 0;
 	}
 }

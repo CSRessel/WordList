@@ -15,7 +15,6 @@ public class Tern
 		private int freq;
 		
 		private Node loKid, hiKid, eqKid;
-		private boolean isEnd;
 	}
 	
 	private int size;
@@ -26,6 +25,9 @@ public class Tern
 	
 	public Tern(WordList<Entry> list)
 	{
+		size = 0;
+		root = new Node();
+		
 		ListIterator<Entry> it = list.listIterator();
 		while (it.hasNext())
 		{
@@ -42,7 +44,7 @@ public class Tern
 	}
 
 	//--------------------------------
-	// Methods
+	// Public Methods
 	
 	/**
 	 * @param e an Entry to add
@@ -77,5 +79,13 @@ public class Tern
 	public String getClosest(String s)
 	{
 		return "";
+	}
+	
+	//--------------------------------
+	// Private Helper Methods
+	
+	private int getCode(char c)
+	{
+		return Character.getNumericValue(c) - Character.getNumericValue('a');
 	}
 }
