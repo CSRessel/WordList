@@ -31,21 +31,28 @@ public class Trie
 	//--------------------------------
 	// Constructors
 	
+	/**
+	 * Constructs new Trie with Entry objects in given class added
+	 * @param list a WordList of Entry objects to add
+	 */
 	public Trie(WordList<Entry> list)
 	{
-		size = 0;
-		root = new Node(' ', 0);
+		this.size = 0;
+		this.root = new Node(' ', 0);
 		
 		ListIterator<Entry> it = list.listIterator();
 		while (it.hasNext())
 		{
-			this.add(it.next());
+			add(it.next());
 		}
 	}
 	
 	//--------------------------------
 	// Accessors
 	
+	/**
+	 * @return number of words in the Trie
+	 */
 	public int getSize()
 	{
 		return size;
@@ -59,7 +66,12 @@ public class Trie
 	 */
 	public void add(Entry e)
 	{
-		Node n = root;
+		if (e == null)
+			throw new NullPointerException("Cannot insert null object into Trie.");
+		if (e.getWord().length() == 0)
+			throw new IllegalArgumentException("Cannot insert blank string into Trie.");
+		
+		Node n = this.root;
 		
 		String w = e.getWord();
 		int f = e.getFreq();
@@ -78,6 +90,27 @@ public class Trie
 		}
 		
 		n.freq = f;
+		
+		this.size++;
+	}
+	
+	/**
+	 * @param s a String to search for
+	 * @return if the Trie contains the given String
+	 */
+	public boolean contains(String s)
+	{
+		Node n = this.root;
+		
+		for (char c : s.toCharArray())
+		{
+			if (n.nodes[getCode(c)] == null)
+				return false;
+			else
+				n = n.nodes[getCode(c)];
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -86,7 +119,7 @@ public class Trie
 	 */
 	public String getCompletion(String s)
 	{
-		Node n = root;
+		Node n = this.root;
 		StringBuilder sB = new StringBuilder();
 		
 		for (char c : s.toCharArray())
@@ -112,15 +145,6 @@ public class Trie
 	}
 	
 	/**
-	 * @param s a String to search for
-	 * @return if the Trie contains the given String
-	 */
-	public boolean contains(String s)
-	{
-		return true;
-	}
-	
-	/**
 	 * @param s a String not present in the Tern
 	 * @return the closest, most frequent (in that order) String in the Tern
 	 */
@@ -143,12 +167,15 @@ public class Trie
 		
 		for (Node n : node.nodes)
 		{
+			if (n == null)
+				continue;
+			
 			list.add(new Entry(String.valueOf(node.value) + String.valueOf(n.value), n.freq));
 		}
 		
 		PriorityQueue<Entry> finalList = new PriorityQueue<Entry>();
 		
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4 && i < list.size() - 1; i++)
 		{
 			finalList.add(list.remove());
 		}
@@ -157,8 +184,8 @@ public class Trie
 	}
 	
 	// the number of levels to recurse to when looking for the completion
-	// with 6 levels, we recurse 4^6 (4096) times, which is very comfortable
-	private static final int AUTOCOMPLETE_DEPTH = 6;
+	// with 5 levels, we recurse 4^5 (1024) times, which is very comfortable
+	private static final int AUTOCOMPLETE_DEPTH = 5;
 	
 	private void findCompletions(Node n, PriorityQueue<Entry> candidates, int depth)
 	{
@@ -170,7 +197,7 @@ public class Trie
 		for (Entry e : entries)
 		{
 			candidates.add(e);
-			findCompletions(n.nodes[Character.getNumericValue(e.getWord().charAt(e.getWord().length() - 1))], candidates, depth++);
+			findCompletions(n.nodes[getCode(e.getWord().charAt(e.getWord().length() - 1))], candidates, depth++);
 		}
 	}
 }

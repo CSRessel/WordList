@@ -1,15 +1,17 @@
-# ignore the gigantic word list
+# the gigantic word list
 en.log
 en.txt
+# possibly unnecessary files
+src/damerau/**
 
-# ignore compiled stuff
+# compiled stuff
 *target*
 *.jar
 *.war
 *.ear
 *.class
 
-# ignore eclipse stuff
+# eclipse stuff
 *.pydevproject
 .project
 .metadata
@@ -25,9 +27,9 @@ local.properties
 .settings/
 .loadpath
 
-# External tool builders
+# external tool builders
 .externalToolBuilders/
 
-# Locally stored "Eclipse launch configurations"
+# locally stored "Eclipse launch configurations"
 *.launch
 /bin/
