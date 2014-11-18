@@ -28,12 +28,25 @@ public class Entry implements Comparable<Entry>
 	
 	public String getWord()
 	{
-		return word;
+		return this.word;
 	}
 	
 	public int getFreq()
 	{
-		return freq;
+		return this.freq;
+	}
+	
+	//--------------------------------
+	// Mutators
+	
+	public void setWord(String s)
+	{
+		this.word = s;
+	}
+	
+	public void setFreq(int i)
+	{
+		this.freq = i;
 	}
 	
 	//--------------------------------

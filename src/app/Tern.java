@@ -26,7 +26,7 @@ public class Tern
 	public Tern(WordList<Entry> list)
 	{
 		this.size = 0;
-		this.root = new Node();
+		//this.root = new Node();
 		
 		ListIterator<Entry> it = list.listIterator();
 		while (it.hasNext())
@@ -76,10 +76,10 @@ public class Tern
 		
 		Node n = get(s, root, 0);
 		
-		if (n == null || n.freq != 0)
-			return true;
-		else
+		if (n == null || n.freq == 0)
 			return false;
+		else
+			return true;
 	}
 	
 	/**
@@ -132,7 +132,9 @@ public class Tern
 		else
 		{
 			if (e.getWord().length() > index + 1)
+			{
 				tmp = insert(e, n.eqKid, index + 1);
+			}
 			else
 			{
 				n.freq = e.getFreq();

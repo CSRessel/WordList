@@ -28,6 +28,10 @@ public class Main
 		
 		System.out.println("> file read");
 		
+//		WordList<Entry> words = new WordList<Entry>();
+//		words.add(new Entry("first", 10000));
+//		words.add(new Entry("fire", 1000000));
+		
 		Trie trie = new Trie(words);
 		
 		System.out.println("> trie created");
@@ -46,7 +50,8 @@ public class Main
 			
 			if (!input.matches("[a-z]+ [a-z]+ .+") && !input.equals("help") && !input.equals("quit"))
 			{
-				System.out.print("invalid input");
+				System.out.println("invalid input");
+				continue;
 			}
 			else if (input.equals("help"))
 			{
@@ -81,6 +86,12 @@ public class Main
 					System.out.println(trie.complete(comms[2]));
 				}
 			}
+			else
+			{
+				System.out.println("invalid input");
+			}
 		} while (true);
+		
+		br.close();
 	}
 }

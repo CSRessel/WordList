@@ -100,6 +100,11 @@ public class Trie
 	 */
 	public boolean contains(String s)
 	{
+		if (s == null)
+			throw new NullPointerException("Cannot search for null String in Trie.");
+		if (s.length() == 0)
+			throw new IllegalArgumentException("Cannot search for blank String in Trie.");
+		
 		Node n = this.root;
 		
 		for (char c : s.toCharArray())
@@ -110,7 +115,7 @@ public class Trie
 				n = n.nodes[getCode(c)];
 		}
 		
-		return true;
+		return n.freq > 0;
 	}
 	
 	/**
@@ -137,7 +142,7 @@ public class Trie
 		}
 		
 		PriorityQueue<Entry> candidates = new PriorityQueue<Entry>();
-		findCompletions(n, candidates, 0);
+		findCompletions(n, candidates, "", 0);
 		
 		sB.append(candidates.peek().getWord());
 		
@@ -161,43 +166,29 @@ public class Trie
 		return Character.getNumericValue(c) - Character.getNumericValue('a');
 	}
 	
-	private PriorityQueue<Entry> getMaxFourChildren(Node node)
+//	// the number of levels to recurse to when looking for the completion
+//	private static final int AUTOCOMPLETE_DEPTH = 2000000000;
+	
+	private void findCompletions(Node node, PriorityQueue<Entry> candidates, String prefix, int depth)
 	{
-		PriorityQueue<Entry> list = new PriorityQueue<Entry>();
+//		if (depth >= AUTOCOMPLETE_DEPTH)
+//			return;
+				
+		PriorityQueue<Entry> entries = new PriorityQueue<Entry>();
 		
 		for (Node n : node.nodes)
 		{
 			if (n == null)
 				continue;
 			
-			list.add(new Entry(String.valueOf(node.value) + String.valueOf(n.value), n.freq));
+			entries.add(new Entry(prefix + n.value, n.freq));
 		}
-		
-		PriorityQueue<Entry> finalList = new PriorityQueue<Entry>();
-		
-		for (int i = 0; i < 4 && i < list.size() - 1; i++)
-		{
-			finalList.add(list.remove());
-		}
-		
-		return finalList;
-	}
-	
-	// the number of levels to recurse to when looking for the completion
-	// with 5 levels, we recurse 4^5 (1024) times, which is very comfortable
-	private static final int AUTOCOMPLETE_DEPTH = 5;
-	
-	private void findCompletions(Node n, PriorityQueue<Entry> candidates, int depth)
-	{
-		if (depth >= AUTOCOMPLETE_DEPTH)
-			return;
-		
-		PriorityQueue<Entry> entries = getMaxFourChildren(n);
 		
 		for (Entry e : entries)
 		{
 			candidates.add(e);
-			findCompletions(n.nodes[getCode(e.getWord().charAt(e.getWord().length() - 1))], candidates, depth++);
+			char c = e.getWord().charAt(e.getWord().length() - 1);
+			findCompletions(node.nodes[getCode(c)], candidates, prefix + c, depth++);
 		}
 	}
 }
