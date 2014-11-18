@@ -117,7 +117,7 @@ public class Trie
 	 * @param s a prefix
 	 * @return the most frequent String with given prefix
 	 */
-	public String getCompletion(String s)
+	public String complete(String s)
 	{
 		Node n = this.root;
 		StringBuilder sB = new StringBuilder();
