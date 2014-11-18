@@ -142,21 +142,21 @@ public class Trie
 		}
 		
 		PriorityQueue<Entry> candidates = new PriorityQueue<Entry>();
-		findCompletions(n, candidates, "", 0);
+		findCompletions(n, candidates, "");
 		
 		sB.append(candidates.peek().getWord());
 		
 		return sB.toString();
 	}
 	
-	/**
-	 * @param s a String not present in the Tern
-	 * @return the closest, most frequent (in that order) String in the Tern
-	 */
-	public String getClosest(String s)
-	{
-		return "";
-	}
+//	/**
+//	 * @param s a String not present in the Tern
+//	 * @return the closest, most frequent (in that order) String in the Tern
+//	 */
+//	public String getClosest(String s)
+//	{
+//		return "";
+//	}
 	
 	//--------------------------------
 	// Private Helper Methods
@@ -165,15 +165,9 @@ public class Trie
 	{
 		return Character.getNumericValue(c) - Character.getNumericValue('a');
 	}
-	
-//	// the number of levels to recurse to when looking for the completion
-//	private static final int AUTOCOMPLETE_DEPTH = 2000000000;
-	
-	private void findCompletions(Node node, PriorityQueue<Entry> candidates, String prefix, int depth)
-	{
-//		if (depth >= AUTOCOMPLETE_DEPTH)
-//			return;
-				
+		
+	private void findCompletions(Node node, PriorityQueue<Entry> candidates, String prefix)
+	{				
 		PriorityQueue<Entry> entries = new PriorityQueue<Entry>();
 		
 		for (Node n : node.nodes)
@@ -188,7 +182,7 @@ public class Trie
 		{
 			candidates.add(e);
 			char c = e.getWord().charAt(e.getWord().length() - 1);
-			findCompletions(node.nodes[getCode(c)], candidates, prefix + c, depth++);
+			findCompletions(node.nodes[getCode(c)], candidates, prefix + c);
 		}
 	}
 }

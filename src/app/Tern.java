@@ -6,6 +6,7 @@
 package app;
 
 import java.util.ListIterator;
+import java.util.PriorityQueue;
 
 public class Tern
 {
@@ -26,12 +27,13 @@ public class Tern
 	public Tern(WordList<Entry> list)
 	{
 		this.size = 0;
+		this.root = null;
 		//this.root = new Node();
 		
 		ListIterator<Entry> it = list.listIterator();
-		while (it.hasNext())
+		for (Entry e : list)
 		{
-			add(it.next());
+			add(e);
 		}
 	}
 	
@@ -56,11 +58,11 @@ public class Tern
 		if (e.getWord().length() == 0)
 			throw new IllegalArgumentException("Cannot insert blank string into Tern.");
 		
-		Node n = insert(e, this.root, 0);
-		
-		n.freq = e.getFreq();
-		
-		this.size++;
+		if (!contains(e.getWord()))
+		{
+			this.root = insert(e.getWord(), this.root, e.getFreq(), 0);
+			this.size++;
+		}
 	}
 	
 	/**
@@ -74,7 +76,7 @@ public class Tern
 		if (s.length() == 0)
 			throw new IllegalArgumentException("Cannot search for blank String in Tern.");
 		
-		Node n = get(s, root, 0);
+		Node n = get(s, this.root, 0);
 		
 		if (n == null || n.freq == 0)
 			return false;
@@ -88,19 +90,27 @@ public class Tern
 	 */
 	public String complete(String s)
 	{
-		Node n = get(s, root, 0);
+		Node n = get(s, this.root, 0).eqKid;
+
+		StringBuilder sB = new StringBuilder();
+		sB.append(s);
 		
-		return "";
+		PriorityQueue<Entry> candidates = new PriorityQueue<Entry>();
+		findCompletions(n, candidates, "");
+		
+		sB.append(candidates.peek().getWord());
+		
+		return sB.toString();
 	}
 	
-	/**
-	 * @param s a String not present in the Tern
-	 * @return the closest, most frequent (in that order) String in the Tern
-	 */
-	public String getClosest(String s)
-	{
-		return "";
-	}
+//	/**
+//	 * @param s a String not present in the Tern
+//	 * @return the closest, most frequent (in that order) String in the Tern
+//	 */
+//	public String getClosest(String s)
+//	{
+//		return "";
+//	}
 	
 	//--------------------------------
 	// Private Helper Methods
@@ -110,10 +120,9 @@ public class Tern
 		return Character.getNumericValue(c) - Character.getNumericValue('a');
 	}
 	
-	private Node insert(Entry e, Node n, int index)
+	private Node insert(String s, Node n, int freq, int index)
 	{
-		char c = e.getWord().charAt(index);
-		Node tmp;
+		char c = s.charAt(index);
 		
 		if (n == null)
 		{
@@ -123,26 +132,25 @@ public class Tern
 		
 		if (c < n.value)
 		{
-			tmp = insert(e, n.loKid, index);
+			n.loKid = insert(s, n.loKid, freq, index);
 		}
 		else if (c > n.value)
 		{
-			tmp = insert(e, n.hiKid, index);
+			n.hiKid = insert(s, n.hiKid, freq, index);
 		}
 		else
 		{
-			if (e.getWord().length() > index + 1)
+			if (s.length() > index + 1)
 			{
-				tmp = insert(e, n.eqKid, index + 1);
+				n.eqKid = insert(s, n.eqKid, freq, index + 1);
 			}
 			else
 			{
-				n.freq = e.getFreq();
-				tmp = n;
+				n.freq = freq;
 			}
 		}
 		
-		return tmp;
+		return n;
 	}
 	
 	private Node get(String s, Node n, int index)
@@ -153,7 +161,8 @@ public class Tern
 		{
 			return null;
 		}
-		else if (c < n.value)
+		
+		if (c < n.value)
 		{
 			return get(s, n.loKid, index);
 		}
@@ -172,5 +181,17 @@ public class Tern
 				return n;
 			}
 		}
+	}
+	
+	private void findCompletions(Node n, PriorityQueue<Entry> candidates, String prefix)
+	{
+		if (n == null)
+			return;
+		
+		candidates.add(new Entry(prefix + n.value, n.freq));
+		
+		findCompletions(n.loKid, candidates, prefix);
+		findCompletions(n.eqKid, candidates, prefix + n.value);
+		findCompletions(n.hiKid, candidates, prefix);
 	}
 }
