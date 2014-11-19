@@ -1,4 +1,5 @@
 /*
+ * Clifford Ressel
  * Trie
  * A trie, specifically used as a word list
  */
@@ -10,6 +11,7 @@ import java.util.PriorityQueue;
 
 public class Trie
 {
+	// a node for the Trie
 	private class Node
 	{
 		private char value;
@@ -32,7 +34,7 @@ public class Trie
 	// Constructors
 	
 	/**
-	 * Constructs new Trie with Entry objects in given class added
+	 * Constructs new Trie with Entry objects in given WordList added
 	 * @param list a WordList of Entry objects to add
 	 */
 	public Trie(WordList<Entry> list)
@@ -149,6 +151,7 @@ public class Trie
 		return sB.toString();
 	}
 	
+// To be implemented:
 //	/**
 //	 * @param s a String not present in the Tern
 //	 * @return the closest, most frequent (in that order) String in the Tern
@@ -161,11 +164,13 @@ public class Trie
 	//--------------------------------
 	// Private Helper Methods
 	
+	// returns an int between 0 and 25 (inclusive) representing the given char
 	private int getCode(char c)
 	{
 		return Character.getNumericValue(c) - Character.getNumericValue('a');
 	}
-		
+	
+	// a recursive method to add all words denoted by sub trees of the given node to the given list
 	private void findCompletions(Node node, PriorityQueue<Entry> candidates, String prefix)
 	{				
 		PriorityQueue<Entry> entries = new PriorityQueue<Entry>();

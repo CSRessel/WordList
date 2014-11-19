@@ -1,7 +1,8 @@
 /*
+ * Clifford Ressel
  * Entry
- * A class to store an entry for a frequency based list of words
- * Contains two values; the words and the frequency
+ * A wrapper class to store an entry in a list of words
+ * Contains two values; the word and its frequency
  */
 
 package app;
@@ -54,7 +55,7 @@ public class Entry implements Comparable<Entry>
 	
 	public int compareTo(Entry e)
 	{
-		// we want a higher frequency to be a lower object for priorty in the PriorityQueue used elsewhere
+		// we want a higher frequency to have priority in the PriorityQueue used in the Tern and Trie
 		if (this.freq > e.freq)
 			return -1;
 		else if (this.freq < e.freq)

@@ -1,3 +1,11 @@
+/*
+ * Clifford Ressel
+ * Main
+ * A simple CLI for testing the size and speed of the Tern and Trie
+ * This code will remain uncommented as it has no bearing on the
+ * 		material studied this term.
+ */
+
 package app;
 
 import java.io.BufferedReader;
@@ -8,7 +16,7 @@ import java.io.InputStreamReader;
 
 public class Main
 {
-	private static final String usage = "[ tern | trie ] [ contains | complete ] string";
+	private static final String usage = "[ tern | trie ] [ contains | complete | testcont | testcomp ] string";
 	private static final long MEGABYTE = 1024L * 1024L;
 	
 	public static long bytesToMegabytes(long bytes)
@@ -32,6 +40,7 @@ public class Main
 		}
 		br.close();
 		
+// for testing with specificity
 //		BufferedReader br = new BufferedReader(new FileReader("en.txt"));
 //		WordList<Entry> words = new WordList<Entry>();
 //		words.add(new Entry("first", 10000));
@@ -113,6 +122,48 @@ public class Main
 					
 					System.out.println((endTime - startTime)/1e6 + " ms");
 				}
+				else if (comms[1].equals("testcont"))
+				{
+					double total = 0;
+					boolean result = false;
+					
+					for (int i = 0; i < 1000; i++)
+					{
+						long startTime = System.nanoTime();
+						result = tern.contains(comms[2]);
+						long endTime = System.nanoTime();
+						
+						total += (double)(endTime - startTime);
+					}
+					
+					total = total / 1000 / 1e6;
+					
+					System.out.println(result);
+					System.out.printf("%f ms\n", total);
+				}
+				else if (comms[1].equals("testcomp"))
+				{
+					double total = 0;
+					String result = "";
+					
+					for (int i = 0; i < 1000; i++)
+					{
+						long startTime = System.nanoTime();
+						result = tern.complete(comms[2]);
+						long endTime = System.nanoTime();
+						
+						total += (double)(endTime - startTime);
+					}
+					
+					total = total / 1000/ 1e6;
+					
+					System.out.println(result);
+					System.out.printf("%f ms\n", total);
+				}
+				else
+				{
+					System.out.println("invalid input");
+				}
 			}
 			else if (comms[0].equals("trie"))
 			{
@@ -141,6 +192,47 @@ public class Main
 					}
 					
 					System.out.println((endTime - startTime)/1e6 + " ms");
+				}
+				else if (comms[1].equals("testcont"))
+				{
+					double total = 0;
+					boolean result = false;
+					
+					for (int i = 0; i < 1000; i++)
+					{
+						long startTime = System.nanoTime();
+						result = trie.contains(comms[2]);
+						long endTime = System.nanoTime();
+						
+						total += (endTime - startTime);
+					}
+					
+					total = total / 1000 / 1e6;
+					
+					System.out.println(result);
+					System.out.printf("%f ms\n", total);
+				}
+				else if (comms[1].equals("testcomp"))
+				{
+					double total = 0;
+					String result = "";
+					
+					for (int i = 0; i < 1000; i++)
+					{
+						long startTime = System.nanoTime();
+						result = trie.complete(comms[2]);
+						long endTime = System.nanoTime();
+						
+						total += (double)(endTime - startTime)/1e6;
+					}
+					
+					total = total / 1000 / 1e6;
+					System.out.println(result);
+					System.out.printf("%f ms\n", total);
+				}
+				else
+				{
+					System.out.println("invalid input");
 				}
 			}
 			else

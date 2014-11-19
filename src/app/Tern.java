@@ -1,4 +1,5 @@
 /*
+ * Clifford Ressel
  * Tern
  * A ternary search tree, specifically used as a word list
  */
@@ -10,6 +11,7 @@ import java.util.PriorityQueue;
 
 public class Tern
 {
+	// a node for the Tern
 	private class Node
 	{
 		private char value;
@@ -24,6 +26,10 @@ public class Tern
 	//--------------------------------
 	// Constructors
 	
+	/**
+	 * Constructs new Tern with Entry objects in given WordList added
+	 * @param list a WordList of Entry objects to add
+	 */
 	public Tern(WordList<Entry> list)
 	{
 		this.size = 0;
@@ -40,6 +46,9 @@ public class Tern
 	//--------------------------------
 	// Accessors
 	
+	/**
+	 * @return number of words in the Trie
+	 */
 	public int getSize()
 	{
 		return this.size;
@@ -103,6 +112,7 @@ public class Tern
 		return sB.toString();
 	}
 	
+// To be implemented:
 //	/**
 //	 * @param s a String not present in the Tern
 //	 * @return the closest, most frequent (in that order) String in the Tern
@@ -115,11 +125,7 @@ public class Tern
 	//--------------------------------
 	// Private Helper Methods
 	
-	private int getCode(char c)
-	{
-		return Character.getNumericValue(c) - Character.getNumericValue('a');
-	}
-	
+	// a recursive method to insert a String into the Tern
 	private Node insert(String s, Node n, int freq, int index)
 	{
 		char c = s.charAt(index);
@@ -153,6 +159,7 @@ public class Tern
 		return n;
 	}
 	
+	// finds the Node corresponding to the given String
 	private Node get(String s, Node n, int index)
 	{
 		char c = s.charAt(index);
@@ -183,6 +190,7 @@ public class Tern
 		}
 	}
 	
+	// a recursive method to add all words denoted by sub trees of the given node to the given list
 	private void findCompletions(Node n, PriorityQueue<Entry> candidates, String prefix)
 	{
 		if (n == null)
