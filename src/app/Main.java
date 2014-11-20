@@ -64,8 +64,8 @@ public class Main
 		System.out.println("> tern created");
 		
 		System.out.println();
-		System.out.println("trie: " + bytesToMegabytes(postTrie - preTrie) + " MB");
-		System.out.println("tern: " + bytesToMegabytes(postTern - preTern) + " MB");
+		System.out.println("trie: " + bytesToMegabytes(postTrie - preTrie) + " MB; " + trie.getSize() + " words; " + trie.getNodes() + " nodes");
+		System.out.println("tern: " + bytesToMegabytes(postTern - preTern) + " MB; " + tern.getSize() + " words; " + tern.getNodes() + " nodes");
 		System.out.println();
 		System.out.println();
 		

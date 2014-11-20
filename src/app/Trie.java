@@ -28,6 +28,7 @@ public class Trie
 	}
 	
 	private int size;
+	private int nodes;
 	private Node root;
 	
 	//--------------------------------
@@ -60,6 +61,14 @@ public class Trie
 		return size;
 	}
 	
+	/**
+	 * @return number of nodes in the Trie
+	 */
+	public int getNodes()
+	{
+		return this.nodes;
+	}
+	
 	//--------------------------------
 	// Public Methods
 	
@@ -83,6 +92,7 @@ public class Trie
 			if (n.nodes[getCode(c)] == null)
 			{
 				n.nodes[getCode(c)] = new Node(c, 0);
+				nodes++;
 				n = n.nodes[getCode(c)];
 			}
 			else

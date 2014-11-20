@@ -21,6 +21,7 @@ public class Tern
 	}
 	
 	private int size;
+	private int nodes;
 	private Node root;
 	
 	//--------------------------------
@@ -47,11 +48,19 @@ public class Tern
 	// Accessors
 	
 	/**
-	 * @return number of words in the Trie
+	 * @return number of words in the Tern
 	 */
 	public int getSize()
 	{
 		return this.size;
+	}
+	
+	/**
+	 * @return number of nodes in the Tern
+	 */
+	public int getNodes()
+	{
+		return this.nodes;
 	}
 
 	//--------------------------------
@@ -134,6 +143,7 @@ public class Tern
 		{
 			n = new Node();
 			n.value = c;
+			this.nodes++;
 		}
 		
 		if (c < n.value)
