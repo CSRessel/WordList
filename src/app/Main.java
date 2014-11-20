@@ -17,6 +17,18 @@ import java.io.InputStreamReader;
 public class Main
 {
 	private static final String usage = "[ tern | trie ] [ contains | complete | testcont | testcomp ] string";
+	//                                          |                              |                          | 
+	//                                          |                              |                          |
+	//                                   the first parameter                   |                          |
+	//                                   selects which data                    |                          |
+	//                                   structure to work                     |                          |
+	//                                   with (tern or trie)                   |                          |
+	//                                                   the second parameter selects which operation     |
+	//                                                   to test using the specified data structure       |
+	//                                                                                                 this final parameter
+	//                                                                                                 is the argument supplied
+	//                                                                                                 to the method call
+
 	private static final long MEGABYTE = 1024L * 1024L;
 	
 	public static long bytesToMegabytes(long bytes)
